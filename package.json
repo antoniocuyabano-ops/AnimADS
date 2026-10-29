@@ -1,0 +1,17 @@
+{
+  "name": "animads",
+  "version": "0.1.0",
+  "description": "AnimADS - transforma camadas de ADs do Figma em vídeos animados com som",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "setup": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "gsap": "^3.12.5",
+    "playwright": "1.63.0",
+    "sharp": "^0.33.5"
+  }
+}

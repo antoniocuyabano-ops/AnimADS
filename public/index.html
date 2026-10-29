@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnimADS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF7A00'/%3E%3Cstop offset='.55' stop-color='%23FF2D87'/%3E%3Cstop offset='1' stop-color='%237B5CFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M12 9.5v13l11-6.5z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 32 32"><path d="M12 9.5v13l11-6.5z" fill="#fff"/></svg></div>
+    <div class="word">Anim<b>ADS</b></div>
+    <span class="ver" id="ver"></span>
+  </div>
+  <div class="top-right">
+    <button class="pill" id="claudePill" title="Clique para verificar de novo"><span class="dot"></span><span id="claudeTxt">Verificando Claude…</span></button>
+    <button class="ghost" id="helpBtn">Como preparar as pastas</button>
+  </div>
+</header>
+
+<main>
+  <section class="new">
+    <div class="drop" id="drop">
+      <div class="drop-inner">
+        <div class="drop-ico">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z"/><path d="M27 36l5 5 5-5M32 41V27"/></svg>
+        </div>
+        <h1>Solte aqui as pastas dos ADs</h1>
+        <p>Uma pasta por AD, com os PNGs das camadas e a arte completa (<code>referencia.png</code>).<br>Pode soltar uma pasta com várias pastas de ADs dentro.</p>
+        <div class="drop-actions">
+          <button class="primary" id="pickBtn"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Escolher pastas no computador</button>
+        </div>
+        <div class="drop-hint" id="dropHint"></div>
+      </div>
+    </div>
+
+    <div class="opts">
+      <div class="opt">
+        <label>Estilo</label>
+        <div class="styles" id="styles">
+          <button data-v="energetico" class="sty on"><span class="sty-ico">⚡</span><b>Energético</b><small>impacto, beat e efeitos</small></button>
+          <button data-v="suave" class="sty"><span class="sty-ico">〜</span><b>Suave</b><small>entradas leves, beat calmo</small></button>
+          <button data-v="premium" class="sty"><span class="sty-ico">✦</span><b>Premium</b><small>elegante, trilha ambiente</small></button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <div class="opt">
+          <label>Duração</label>
+          <div class="seg" id="dur"><button data-v="6">6s</button><button data-v="10" class="on">10s</button></div>
+        </div>
+        <div class="opt">
+          <label>Som</label>
+          <div class="toggles">
+            <label class="tg"><input type="checkbox" id="optMusica" checked><span></span>Trilha</label>
+            <label class="tg"><input type="checkbox" id="optEfeitos" checked><span></span>Efeitos sonoros</label>
+            <label class="tg"><input type="checkbox" id="optMuda" checked><span></span>Versão sem som também</label>
+          </div>
+        </div>
+        <div class="opt">
+          <label>Roteiro</label>
+          <div class="toggles"><label class="tg"><input type="checkbox" id="optClaude" checked><span></span>Criado pelo Claude</label></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="list">
+    <div class="list-head">
+      <h2>Seus ADs</h2>
+      <div class="counts" id="counts"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">
+      <div class="empty-art"><span></span><span></span><span></span></div>
+      <p>Nenhum AD ainda. Solte uma pasta ali em cima para começar.</p>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="studio" hidden>
+  <div class="sheet">
+    <button class="x" data-close aria-label="Fechar">✕</button>
+    <div class="studio">
+      <div class="stage-col">
+        <div class="tabs" id="stageTabs">
+          <button data-t="video" class="on">Vídeo final</button>
+          <button data-t="live">Animação ao vivo</button>
+          <button data-t="ref">Arte original</button>
+        </div>
+        <div class="stage-box" id="stageBox"></div>
+      </div>
+      <div class="side-col">
+        <div class="s-head"><h3 id="sName"></h3><div class="meta" id="sMeta"></div></div>
+        <div class="card-mini" id="sRoteiro"></div>
+        <div class="tl" id="sTimeline"></div>
+        <div class="adjust">
+          <label>Pedir ajuste</label>
+          <div class="chips" id="chips">
+            <button>Deixa mais rápido</button><button>Deixa mais calmo</button><button>Mais impacto na oferta</button>
+            <button>Tira a tremida</button><button>Benefícios entrando um por um, de baixo</button>
+          </div>
+          <textarea id="adjText" rows="3" placeholder="Ex.: o selo COMEÇOU deve entrar girando e a oferta precisa aparecer antes"></textarea>
+          <div class="adj-row">
+            <select id="adjStyle"><option value="">Manter estilo</option><option value="energetico">Energético</option><option value="suave">Suave</option><option value="premium">Premium</option></select>
+            <button class="primary" id="adjBtn">Aplicar ajuste</button>
+          </div>
+        </div>
+        <div class="files" id="sFiles"></div>
+        <details class="log"><summary>Detalhes técnicos</summary><pre id="sLog"></pre></details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="help" hidden>
+  <div class="sheet small">
+    <button class="x" data-close aria-label="Fechar">✕</button>
+    <h3>Como preparar a pasta de cada AD</h3>
+    <ol class="steps">
+      <li><b>No Figma, abra o frame do AD</b> (story 1080×1920, feed 1080×1080 ou 1080×1350).</li>
+      <li><b>Exporte as camadas:</b> selecione todas as camadas de primeiro nível dentro do frame (clique na primeira, <kbd>Shift</kbd>+clique na última) → painel <b>Export</b> → <b>+</b> → <b>PNG 1x</b> → <b>Export N layers</b>.</li>
+      <li><b>Exporte a arte completa:</b> selecione o próprio frame → PNG 1x → salve na mesma pasta com o nome <code>referencia.png</code>.</li>
+      <li><b>Solte a pasta aqui.</b> Para vários ADs de uma vez, coloque cada AD em uma pasta e solte a pasta “mãe”.</li>
+    </ol>
+    <div class="tipbox">
+      <b>Dicas</b>
+      <ul>
+        <li>Grupos que você quer animar separados (ex.: lista de benefícios) podem vir num PNG só: o AnimADS divide em linhas sozinho.</li>
+        <li>Brilhos e desfoques grandes ficam no fundo, que ganha um movimento suave.</li>
+        <li>Os vídeos são salvos numa subpasta <code>AnimADS</code> dentro da pasta de cada AD.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>
